@@ -1,10 +1,9 @@
 "use client"
 import axios from "axios";
-import { log } from "console";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import {useRouter} from "next/navigation";
-import React ,{useState} from "react";
+import React  from "react";
 
 export default function ProfilePage() {
 
