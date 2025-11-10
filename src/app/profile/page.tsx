@@ -11,12 +11,15 @@ export default function ProfilePage() {
     const [data,setData] = React.useState("nothing");
     const Logout = async () => {
         try {
-            await axios.get("/api/users/logout");
-            toast.success("Logout successful");
-            router.push("/login");
-        } catch (error:any) {
-            console.log(error.message);
-            toast.error(error.message); 
+          await axios.get("/api/users/logout");
+          toast.success("Logout successful");
+          router.push("/login");
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error(error.message);
+          } else {
+            console.error("Unknown error while fetching profile");
+          }
         }
 
         localStorage.removeItem("token");

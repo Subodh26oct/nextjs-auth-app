@@ -21,8 +21,12 @@ export default function ForgotPasswordPage() {
       const response = await axios.post("/api/users/request-reset", { email });
       toast.success(response.data.message || "Password reset link sent!");
       setEmail("");
-    } catch (error: any) {
-      toast.error(error.response?.data?.error || "Failed to send reset link");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.error || "Failed to send reset link");
+      } else {
+        toast.error("Unexpected error occurred");
+      }
     } finally {
       setLoading(false);
     }

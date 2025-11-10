@@ -21,9 +21,12 @@ export default function LoginPage() {
       console.log("Login success", response.data);
       toast.success("Login successful");
       router.push("/profile");
-    } catch (error: any) {
-      console.log("Login failed", error.message);
-      toast.error(error.response?.data?.error || "Login failed");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.error || "Login failed");
+      } else {
+        toast.error("Unexpected login error");
+      }
     } finally {
       setLoading(false);
     }
@@ -44,8 +47,14 @@ export default function LoginPage() {
       });
       toast.success(response.data.message || "Password reset link sent!");
       setForgotMode(false); // ✅ Correct line
-    } catch (error: any) {
-      toast.error(error.response?.data?.error || "Failed to send reset link");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.error || "Failed to send reset link");
+      } else if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Unexpected error while sending reset link");
+      }
     } finally {
       setLoading(false);
     }
@@ -154,7 +163,7 @@ export default function LoginPage() {
 
       <div className="mt-6">
         <Link href="/signup" className="text-blue-500 hover:underline">
-          Don't have an account? Sign up
+          Don&apos;t have an account? Sign up
         </Link>
       </div>
     </div>

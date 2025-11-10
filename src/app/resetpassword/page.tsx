@@ -32,8 +32,12 @@ export default function ResetPasswordPage() {
       });
       toast.success(response.data.message || "Password reset successful!");
       setTimeout(() => router.push("/login"), 1500);
-    } catch (error: any) {
-      toast.error(error.response?.data?.error || "Failed to reset password");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.error || "Failed to reset password");
+      } else {
+        toast.error("Unexpected password reset error");
+      }
     } finally {
       setLoading(false);
     }
