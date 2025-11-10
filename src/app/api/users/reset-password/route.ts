@@ -45,11 +45,18 @@ export async function POST(request: NextRequest) {
       message: "Password reset successfully",
       success: true,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Password reset error:", error);
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: "Failed to reset password", details: error.message },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
-      { error: "Failed to reset password", details: error.message },
+      { error: "Failed to reset password" },
       { status: 500 }
     );
   }
+
 }

@@ -38,10 +38,15 @@ export async function POST(request: NextRequest) {
       message: "Password reset link sent successfully",
       success: true,
     });
-  } catch (error: any) {
-    console.error("Request password reset error:", error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: "Failed to send reset link", details: error.message },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
-      { error: "Failed to send reset link", details: error.message },
+      { error: "Failed to send reset link" },
       { status: 500 }
     );
   }

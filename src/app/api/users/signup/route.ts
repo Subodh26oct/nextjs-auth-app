@@ -71,14 +71,15 @@ export async function POST(request: NextRequest) {
       message: "User created successfully, verification email sent",
       success: true,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Signup error:", error);
-    return NextResponse.json(
-      {
-        error: "Error creating user",
-        details: error.message,
-      },
-      { status: 500 }
-    );
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: "Error creating user", details: error.message },
+        { status: 500 }
+      );
+    }
+    return NextResponse.json({ error: "Error creating user" }, { status: 500 });
   }
+
 }

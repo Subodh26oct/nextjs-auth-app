@@ -43,11 +43,20 @@ export async function POST(request: NextRequest) {
       message: "Verification email resent successfully",
       success: true,
     });
-  } catch (error: any) {
-    console.error("Resend verification error:", error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json(
+        {
+          error: "Failed to resend verification email",
+          details: error.message,
+        },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
-      { error: "Failed to resend verification", details: error.message },
+      { error: "Failed to resend verification email" },
       { status: 500 }
     );
   }
+
 }
