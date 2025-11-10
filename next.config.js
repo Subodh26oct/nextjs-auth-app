@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/login/verifyemail',
+        destination: '/verifyemail',
+        permanent: true,
+      },
+    ];
+  },
   experimental: {
   },
   reactStrictMode: true,
