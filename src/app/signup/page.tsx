@@ -16,33 +16,7 @@ export default function SignUpPage() {
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
-  // const onSignup = async ()=>{
-  //     try {
-  //         setLoading(true);
-  //         const response = await axios.post('/api/users/signup',{
-  //             name:user.username,
-  //             email:user.email,
-  //             password:user.password
-  //         });
-
-  //         if (response.data.success) {
-  //           toast.success("Signup successful!");
-  //           // Use router.replace instead of push and remove setTimeout
-  //           router.replace("/login");
-  //         }
-
-  //         // console.log("Signup successful",response.data);
-  //         // router.push('/login');
-
-  //     } catch (error:any) {
-  //         console.log("Signup failed",error.message);
-
-  //         console.log(error.message);
-
-  //     }finally{
-  //         setLoading(false);
-  //     }
-  // }
+  
   const onSignup = async () => {
     try {
       setLoading(true);
@@ -50,13 +24,16 @@ export default function SignUpPage() {
 
       const response = await axios.post("/api/users/signup", user);
       if (response.data.success) {
-      toast.success("Signup successful!");
-      router.replace("/login");
+        toast.success("Signup successful!");
+        router.replace("/login");
       }
       console.log("Signup successful", response.data);
-    } catch (error: any) {
-      console.log("Signup failed", error.message);
-      toast.error(error.message || "Something went wrong!");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     } finally {
       setLoading(false);
     }
