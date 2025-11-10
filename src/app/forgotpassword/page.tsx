@@ -70,7 +70,7 @@ export default function ForgotPasswordPage() {
         href="/signup"
         className="text-blue-500 hover:underline mt-2 text-sm"
       >
-        Don't have an account? Sign up
+        Don&apos;t have an account? Sign up
       </Link>
     </div>
   );

@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     };
     //create token
     const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, {
-        expiresIn: "1d",
+      expiresIn: "1d",
     });
 
     const response = NextResponse.json({
@@ -48,7 +48,15 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
     });
     return response;
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    console.error("Login error:", error);
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json(
+      { error: "Unexpected error during login" },
+      { status: 500 }
+    );
   }
+
 }
